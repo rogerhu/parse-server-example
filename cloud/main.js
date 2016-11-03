@@ -12,8 +12,12 @@ Parse.Cloud.define('pushToChannel', function(request, response) {
 
   var customData = params.customData;
 
-  // use to custom tweak whatever payload you wish to send
-  var channels = [channel];
+  var query = new Parse.Query(Parse.Installation);
+  var oneWeekAgo = new Date(Date.now() -  (7 * 24 * 60 * 60 * 1000));
+
+  query.equalTo('channels', channel);
+  query.equalTo('deviceType', 'android');
+  query.greaterThanOrEqualTo('updatedAt', oneWeekAgo);
 
   var payload = {};
 
@@ -24,7 +28,7 @@ Parse.Cloud.define('pushToChannel', function(request, response) {
   // Note that useMasterKey is necessary for Push notifications to succeed.
 
   Parse.Push.send({
-  channels: channels,
+  where: query,
   // Parse.Push requires a dictionary, not a string.
   data: {"customData": customData},
   }, { success: function() {
