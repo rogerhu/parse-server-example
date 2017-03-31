@@ -49,9 +49,9 @@ Parse.Cloud.define('pingReply', function(request, response) {
   }
 
   var sender = customData.sender;
-  
+
   var query = new Parse.Query(Parse.Installation);
-  query.equalTo("objectId", sender);
+  query.equalTo("installationId", sender);
 
   Parse.Push.send({
   where: query,
