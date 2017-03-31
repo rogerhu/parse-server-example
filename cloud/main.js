@@ -42,13 +42,14 @@ Parse.Cloud.define('pushToChannel', function(request, response) {
 
 Parse.Cloud.define('pingReply', function(request, response) {
   var params = request.params;
+  var customData = params.customData;
 
-  var sender = params.sender;
-
-  if (!sender) {
-    response.error("No response!")
+  if (!customData) {
+    response.error("Missing customData!")
   }
 
+  var sender = customData.sender;
+  
   var query = new Parse.Query(Parse.Installation);
   query.equalTo("objectId", sender);
 
