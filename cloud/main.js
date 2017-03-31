@@ -48,15 +48,14 @@ Parse.Cloud.define('pingReply', function(request, response) {
     response.error("Missing customData!")
   }
 
-  var sender = customData.sender;
-
+  var sender = JSON.parse(customData).sender;
   var query = new Parse.Query(Parse.Installation);
   query.equalTo("installationId", sender);
 
   Parse.Push.send({
   where: query,
   // Parse.Push requires a dictionary, not a string.
-  data: {"customData": "Reply!!"},
+  data: {"alert": "The Giants scored!"},
   }, { success: function() {
      console.log("#### PUSH OK");
   }, error: function(error) {
